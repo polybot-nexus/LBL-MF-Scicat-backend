@@ -7,7 +7,7 @@
     },
     "scripts": {
         "lint": "eslint --fix .",
-        "prepare:start": "prepare-configuration.sh && docker-compose -f docker-compose-local-instance.yaml up -d",
+        "prepare:start": "./prepare-configuration.sh && sudo docker-compose -f docker-compose-local-instance.yaml up -d",
         "start": "node .",
         "posttest": "eslint .",
         "test": "./node_modules/mocha/bin/mocha --timeout=60000 --reporter spec --exit",

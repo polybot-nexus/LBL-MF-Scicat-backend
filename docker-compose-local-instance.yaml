@@ -3,7 +3,7 @@ services:
     mongodb:
         image: "bitnami/mongodb:latest"
         ports:
-            - "27017:27017"
+            - "127.0.0.1:27017:27017"
         volumes:
             - "mongodb_data:/bitnami"
     openldap:
@@ -25,19 +25,19 @@ services:
         links:
             - openldap
         entrypoint: sh -c '/ldif_files/addAll.sh'
-    openldap-admin:
-        image: osixia/phpldapadmin
-        container_name: openldap-admin
-        hostname: openldap-admin
-        environment:
-            PHPLDAPADMIN_HTTPS=false:
-            PHPLDAPADMIN_LDAP_HOSTS: "openldap"
-        ports:
-            - "8080:80"
-        links:
-            - "openldap:openldap"
-        depends_on:
-            - openldap
+    # openldap-admin:
+        # image: osixia/phpldapadmin
+        # container_name: openldap-admin
+        # hostname: openldap-admin
+        # environment:
+        #     PHPLDAPADMIN_HTTPS=false:
+        #     PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+        # ports:
+        #     - "8080:80"
+        # links:
+        #     - "openldap:openldap"
+        # depends_on:
+        #     - openldap
     scichat-loopback:
         image: dacat/scichat-loopback:latest
         ports:
