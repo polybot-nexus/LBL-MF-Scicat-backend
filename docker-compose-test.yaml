@@ -1,0 +1,63 @@
+version: "3.8"
+
+# networks:
+#   scicat_network:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 192.168.4.0/24  # Define a custom subnet
+
+services:
+  mongodb:
+    image: "bitnami/mongodb:latest"
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    # networks:
+    #   scicat_network:
+    #     ipv4_address: 192.168.4.10
+    volumes:
+      - mongodb_data:/bitnami
+
+  scicat-backend:
+    build:
+      context: .
+      dockerfile: CI/ESS/Dockerfile.test
+    image: scicatproject/backend
+    container_name: scicat-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    # networks:
+    #   scicat_network:
+    #     ipv4_address: 192.168.4.150
+    links:
+     - mongodb
+    # environment:
+    #   MONGO_URI: "mongodb://mongodb:27017/scicat"
+    #   PORT: "3000"
+    #   PUBLIC_URL: "http://192.168.4.150:3000"
+
+  # scicat-frontend:
+  #   build:
+  #     context: ../LBL-MF-Scicat-frontend
+  #     dockerfile: Dockerfile
+  #   image: scicatproject/frontend
+  #   container_name: scicat-frontend
+  #   restart: always
+  #   ports:
+  #     - "4200:4200"
+  #   depends_on:
+  #     - scicat-backend
+  #   # networks:
+  #   #   scicat_network:
+  #   #     ipv4_address: 192.168.4.30
+  #   environment:
+  #     API_BASE_URL: "http://scicat-backend:3000/api"
+
+volumes:
+  mongodb_data:
+    driver: local
